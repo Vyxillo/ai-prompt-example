@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ashen Veil: Crimson Oath</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;800&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0A0B10;--crimson-d:#4A0A10;--red:#FF2A4B;--cyan:#7DF9FF;--gold:#FFD700;--text:#F4ECEC;
+--serif:'Cinzel',Georgia,serif;--sans:'Figtree',system-ui,sans-serif;box-sizing:border-box}
+*,*::before,*::after{box-sizing:inherit;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow:hidden}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}
+:focus-visible{outline:2px solid var(--cyan);outline-offset:3px}
+
+/* Header */
+header{position:fixed;top:0;left:0;width:100%;height:80px;z-index:50;display:flex;align-items:center;justify-content:space-between;padding:env(safe-area-inset-top,0px) 48px 0;background:linear-gradient(#0A0B10cc,transparent)}
+.logo{width:160px;margin-left:16px;font-family:var(--serif);font-weight:800;font-size:20px;line-height:1;letter-spacing:.04em;color:var(--gold);text-shadow:0 0 14px #FFD70066;display:flex;align-items:center;gap:8px}
+.logo svg{width:26px;height:26px;flex:none}
+.actions{display:flex;align-items:center;gap:14px}
+.round{width:38px;height:38px;border-radius:50%;border:1.5px solid #ffffff88;display:grid;place-items:center;background:#0A0B1099;transition:.25s}
+.round svg{width:19px;height:19px;stroke:#fff;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.round:hover{border-color:var(--gold);transform:scale(1.08)}
+.poly{position:relative;height:40px;padding:0 22px;font-size:14px;font-weight:700;display:inline-flex;align-items:center;overflow:hidden;
+ clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);background:linear-gradient(#ffffff22,#ffffff0a);box-shadow:inset 0 0 0 1.5px var(--gold);transition:transform .25s}
+.poly::after,.cta::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,#ffffff88 50%,transparent 65%);transform:translateX(-120%);pointer-events:none}
+.poly:hover,.cta:hover{transform:scale(1.05)}
+.poly:hover::after,.cta:hover::after{transform:translateX(120%);transition:transform .7s}
+.burger{display:none}
+.drawer{position:fixed;inset:60px 0 auto 0;z-index:49;background:#0A0B10ee;backdrop-filter:blur(10px);padding:16px 24px 24px;display:none;flex-direction:column;gap:12px}
+.drawer.open{display:flex}
+
+/* Hero */
+.hero{position:relative;width:100vw;height:100vh;height:100dvh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:center;
+ background:radial-gradient(ellipse at 50% 35%,#7a1220 0,var(--crimson-d) 45%,var(--bg) 100%)}
+.art{position:absolute;inset:-3%;width:106%;height:106%;transition:transform .25s ease-out;will-change:transform}
+.art svg{width:100%;height:100%;object-fit:cover}
+#fx{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.vignette{position:absolute;inset:0;background:linear-gradient(transparent 45%,#0A0B10dd 100%);pointer-events:none}
+.content{position:relative;z-index:5;max-width:850px;width:100%;padding:0 24px;margin-top:22vh;text-align:center;display:flex;flex-direction:column;align-items:center}
+.titlerow{display:flex;align-items:center;gap:24px}
+h1{font-family:var(--serif);font-weight:800;font-size:clamp(2rem,6vw,4.5rem);line-height:1.1;text-shadow:0 0 30px #FF2A4B88,0 4px 0 #0A0B10}
+.play{flex:none;width:64px;height:64px;border-radius:50%;border:2px solid var(--red);display:grid;place-items:center;background:#0A0B1088;box-shadow:0 0 15px #FF2A4B99;animation:ring 2.4s infinite;transition:transform .25s}
+.play:hover{transform:scale(1.1)}
+.play svg{width:24px;height:24px;fill:#fff;margin-left:3px}
+@keyframes ring{50%{box-shadow:0 0 28px #FF2A4Bcc,0 0 0 8px #FF2A4B22}}
+.cta{position:relative;overflow:hidden;margin-top:24px;width:300px;height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;
+ background:linear-gradient(#FF2A4B,#a1112a);clip-path:polygon(16px 0,calc(100% - 16px) 0,100% 50%,calc(100% - 16px) 100%,16px 100%,0 50%);transition:transform .25s;filter:drop-shadow(0 0 12px #FF2A4B)}
+.cta b{font-size:19px;font-weight:700;line-height:1.1}
+.cta small{font-size:11.5px;opacity:.85;letter-spacing:.06em}
+.ver{margin-top:8px;font-size:13px;letter-spacing:.05em;color:#ffffffcc}
+
+/* Floating */
+.badge{position:fixed;left:32px;bottom:32px;z-index:40;display:flex;flex-direction:column;align-items:center;gap:8px;animation:float 4s ease-in-out infinite}
+.badge .circle{width:84px;height:84px;border-radius:50%;display:grid;place-items:center;border:2px solid var(--gold);background:radial-gradient(#7a1220,#2a0509);box-shadow:0 0 20px #FFD70066}
+.badge svg{width:36px;height:36px;stroke:var(--gold);fill:none;stroke-width:1.6;stroke-linejoin:round}
+.badge span{width:120px;font-size:12px;font-weight:700;text-align:center;background:#0A0B10cc;padding:4px 0;border:1px solid #FFD70066}
+@keyframes float{50%{transform:translateY(-6px)}0%,100%{transform:translateY(6px)}}
+.esrb{position:fixed;right:32px;bottom:24px;z-index:40;width:170px;padding:8px 10px;display:flex;gap:10px;align-items:center;border:1px solid #ffffff66;background:#000000a6;backdrop-filter:blur(12px);font-size:10px;line-height:1.35}
+.esrb strong{font-family:var(--serif);font-size:26px;border:2px solid #fff;padding:0 6px;line-height:1.1}
+
+/* Modals */
+.modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:#05060acc;backdrop-filter:blur(6px);padding:16px}
+.modal.open{display:grid}
+.box{position:relative;width:90vw;max-width:900px;border:1.5px solid var(--gold);background:var(--bg);box-shadow:0 0 40px #FF2A4B55;animation:pop .3s ease-out}
+@keyframes pop{from{transform:scale(.94);opacity:0}}
+.video{aspect-ratio:16/9;display:grid;place-items:center;text-align:center;background:radial-gradient(circle at 50% 40%,#5a0e18,#0A0B10);padding:24px}
+.video h2,.reward h2{font-family:var(--serif);font-size:clamp(1.3rem,3vw,2rem);margin-bottom:8px}
+.video p,.reward p{opacity:.8;max-width:46ch;margin:0 auto}
+.x{position:absolute;top:8px;right:10px;width:36px;height:36px;font-size:22px;z-index:2}
+.reward{max-width:520px;padding:32px 28px;text-align:center}
+.gifts{display:flex;justify-content:center;gap:12px;margin:20px 0}
+.gift{width:84px;padding:12px 4px;border:1px solid #FFD70088;background:#4A0A1088;font-size:12px;font-weight:600}
+.gift i{display:block;font-style:normal;font-size:26px;margin-bottom:4px}
+.reward .cta{margin:0 auto;width:240px;height:52px}
+
+@media (max-width:767px){
+ header{height:60px;padding-left:16px;padding-right:16px}
+ .logo{width:120px;margin-left:0;font-size:16px}
+ .actions>:not(.burger){display:none}
+ .burger{display:grid}
+ .play{width:48px;height:48px}.play svg{width:20px;height:20px}
+ .titlerow{flex-direction:column;gap:16px}
+ .cta{width:240px;height:48px}.cta b{font-size:17px}
+ .badge{left:16px;bottom:16px}.badge .circle{width:65px;height:65px}.badge svg{width:28px;height:28px}.badge span{display:none}
+ .esrb{display:none}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header>
+ <div class="logo"><svg viewBox="0 0 24 24" fill="none" stroke="#FFD700" stroke-width="1.8"><path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3z"/></svg>ASHEN VEIL</div>
+ <nav class="actions" aria-label="Menu utama">
+  <button class="round" aria-label="Bahasa"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg></button>
+  <button class="round" aria-label="Bagikan"><svg viewBox="0 0 24 24"><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="6" r="2.5"/><circle cx="18" cy="18" r="2.5"/><path d="M8.2 11l7.6-4M8.2 13l7.6 4"/></svg></button>
+  <button class="round" aria-label="Komunitas"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-4 3-6 6.500-6s6.500 2 6.500 6M16 5a3.500 3.500 0 010 7M18 14c2 .8 3.500 2.500 3.500 6"/></svg></button>
+  <a class="poly" href="#" onclick="return false">Tukar Kode</a>
+  <a class="poly" href="#" onclick="return false">Top-Up</a>
+  <a class="poly" href="#" onclick="return false">Situs Resmi</a>
+  <button class="round burger" id="burger" aria-label="Buka menu" aria-expanded="false"><svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+ </nav>
+</header>
+<div class="drawer" id="drawer"><a class="poly" href="#" onclick="return false">Tukar Kode</a><a class="poly" href="#" onclick="return false">Top-Up</a><a class="poly" href="#" onclick="return false">Situs Resmi</a><a class="poly" href="#" onclick="return false">Komunitas</a></div>
+
+<main class="hero" id="hero">
+ <div class="art" id="art" aria-hidden="true">
+  <svg viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice">
+   <defs>
+    <radialGradient id="moon"><stop offset="0" stop-color="#ffd2c8"/><stop offset=".55" stop-color="#FF2A4B"/><stop offset="1" stop-color="#FF2A4B" stop-opacity="0"/></radialGradient>
+    <linearGradient id="m1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2a0b14"/><stop offset="1" stop-color="#0A0B10"/></linearGradient>
+   </defs>
+   <g data-d="8"><circle cx="960" cy="360" r="330" fill="url(#moon)" opacity=".85"/><circle cx="960" cy="360" r="130" fill="#ffe3dc"/></g>
+   <g data-d="16" fill="#3a0d17"><path d="M0 760L240 520 420 680 640 440 860 700 1060 480 1280 720 1500 500 1720 690 1920 560V1080H0z"/></g>
+   <g data-d="28" fill="url(#m1)"><path d="M0 860L300 650 560 820 820 610 1100 840 1380 640 1660 830 1920 700V1080H0z"/></g>
+   <g data-d="44"><path d="M900 1080C900 900 920 800 950 700L930 640 960 600 990 640 970 700C1000 800 1020 900 1020 1080z" fill="#07080c"/><path d="M1040 520L1090 1000" stroke="#7DF9FF" stroke-width="5" stroke-linecap="round" opacity=".9"/><circle cx="960" cy="610" r="26" fill="#07080c"/><path d="M930 640Q860 700 800 820Q900 760 940 700zM990 640Q1060 700 1120 820Q1020 760 980 700z" fill="#0f0a10"/></g>
+  </svg>
+ </div>
+ <canvas id="fx"></canvas>
+ <div class="vignette"></div>
+ <div class="content">
+  <div class="titlerow">
+   <h1>Ashen Veil:<br>Crimson Oath</h1>
+   <button class="play" id="playBtn" aria-label="Putar trailer"><svg viewBox="0 0 24 24"><path d="M6 3l15 9-15 9z"/></svg></button>
+  </div>
+  <a class="cta" href="#" onclick="return false"><b>Unduh untuk PC</b><small>LaunchPlay</small></a>
+  <p class="ver">Versi 2.0 "Bara Terakhir" kini tersedia</p>
+ </div>
+</main>
+
+<button class="badge" id="giftBtn" aria-label="Buka hadiah pemula"><span class="circle"><svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="12" rx="1"/><path d="M12 9v12M3 13h18M12 9C9 9 7 7 8.500 5.500 10 4 12 7 12 9zM12 9c3 0 5-2 3.500-3.500C14 4 12 7 12 9z"/></svg></span><span>Hadiah Pemula</span></button>
+<aside class="esrb"><strong>T</strong><div>REMAJA<br>Kekerasan fantasi, darah, tema ringan</div></aside>
+
+<div class="modal" id="mediaModal" role="dialog" aria-modal="true" aria-label="Trailer">
+ <div class="box"><button class="x" data-close aria-label="Tutup">×</button>
+  <div class="video"><div><h2>Trailer segera hadir</h2><p>Ganti area ini dengan &lt;iframe&gt; atau &lt;video&gt; trailer game kamu.</p></div></div></div>
+</div>
+<div class="modal" id="rewardModal" role="dialog" aria-modal="true" aria-label="Hadiah pemula">
+ <div class="box reward"><button class="x" data-close aria-label="Tutup">×</button>
+  <h2>Hadiah Pemula</h2><p>Masuk selama 7 hari pertama dan klaim paket perlengkapan perjalananmu.</p>
+  <div class="gifts"><div class="gift"><i>💎</i>1.600 Permata</div><div class="gift"><i>⚔️</i>Pedang Bara</div><div class="gift"><i>🧪</i>10 Ramuan</div></div>
+  <a class="cta" href="#" onclick="return false" data-close><b>Klaim Sekarang</b></a></div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+// Modals
+const open=m=>{m.classList.add('open');m.querySelector('.x').focus()};
+const closeAll=()=>document.querySelectorAll('.modal').forEach(m=>m.classList.remove('open'));
+$('#playBtn').onclick=()=>open($('#mediaModal'));
+$('#giftBtn').onclick=()=>open($('#rewardModal'));
+document.querySelectorAll('.modal').forEach(m=>m.addEventListener('click',e=>{if(e.target===m||e.target.closest('[data-close]'))closeAll()}));
+addEventListener('keydown',e=>{if(e.key==='Escape')closeAll()});
+// Burger
+$('#burger').onclick=e=>{const o=$('#drawer').classList.toggle('open');e.currentTarget.setAttribute('aria-expanded',o)};
+// Parallax
+const layers=[...document.querySelectorAll('[data-d]')];
+addEventListener('mousemove',e=>{
+ const x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;
+ layers.forEach(l=>{const d=+l.dataset.d;l.style.transform=`translate(${-x*d}px,${-y*d*.6}px)`});
+});
+// Particles
+const c=$('#fx'),g=c.getContext('2d');let P=[];
+function size(){c.width=innerWidth;c.height=innerHeight}
+size();addEventListener('resize',size);
+const mk=()=>({x:Math.random()*c.width,y:c.height+10,r:Math.random()*2.2+.6,v:Math.random()*.8+.3,s:Math.random()*Math.PI*2,h:Math.random()<.2?'125,249,255':'255,'+(60+Math.random()*80|0)+',75'});
+for(let i=0;i<70;i++){const p=mk();p.y=Math.random()*c.height;P.push(p)}
+const calm=matchMedia('(prefers-reduced-motion:reduce)').matches;
+(function loop(){
+ g.clearRect(0,0,c.width,c.height);
+ P.forEach((p,i)=>{
+  if(!calm){p.y-=p.v;p.s+=.02;p.x+=Math.sin(p.s)*.5}
+  if(p.y<-10)P[i]=mk();
+  g.beginPath();g.fillStyle=`rgba(${p.h},${Math.min(1,p.y/c.height+.2)*.8})`;g.shadowBlur=10;g.shadowColor=`rgb(${p.h})`;
+  g.arc(p.x,p.y,p.r,0,7);g.fill();
+ });
+ requestAnimationFrame(loop);
+})();
+</script>
+</body>
+</html>
